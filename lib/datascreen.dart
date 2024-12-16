@@ -1,22 +1,29 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:demographic_information/DbHelper/db_helper.dart';
-import 'package:demographic_information/DemographicInfo/demo_graphicinfo.dart';
 
-class DataListPage extends StatelessWidget {
-   final Map<String, dynamic>formData;
-   DataListPage({
+class DataListPage extends StatefulWidget {
+  final Map<String, dynamic> formData;
+  DataListPage({
     Key? key,
     required this.formData,
   }) : super(key: key);
-  final dbHelper = DatabaseHelper();
 
- void _saveToServer() async {
+  @override
+  State<DataListPage> createState() => _DataListPageState();
+}
+
+class _DataListPageState extends State<DataListPage> {
+  final dbHelper = DatabaseHelper();
+  List<Map<String, dynamic>> formData = [];
+  List<int> selectedIds = [];
+
+  void _saveToServer() async {
     // Use http package to send data to server
     final url = Uri.parse('https://demographic.com/save-data');
-    final response = await http.post(url, body: {'formData': formData.toString()});
+    final response =
+        await http.post(url, body: {'formData': widget.formData.toString()});
 
     if (response.statusCode == 200) {
       print('Data saved successfully!');
@@ -24,16 +31,127 @@ class DataListPage extends StatelessWidget {
       print('Failed to save data.');
     }
   }
+//  void _sendDataToServer() async {
+//     final selectedData = formData.where((item) => selectedIds.contains(item['id'])).toList();
 
-  //  Future<void> _uploadData(Map<String, dynamic> data) async {
+//     // Replace with your server URL
+//     final url = Uri.parse('https://example.com/api/data');
+//     final response = await http.post(url, body: {'data': selectedData.toString()});
+
+//     if (response.statusCode == 200) {
+
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('Data sent successfully!')),
+
+//       );
+
+//     } else {
+
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('Failed to send data!')),
+//       );
+//          await DatabaseHelper().clearData();
+//      loadData();
+//     }
+//   }
+  void _sendDataToServer() async {
+    if (selectedIds.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            backgroundColor: Colors.redAccent.shade700,
+            content: Text("No data selected to send!")),
+      );
+      return;
+    }
+
+    // Simulate sending data to the server
+    for (int id in selectedIds) {
+      final item = formData.firstWhere((element) => element['id'] == id);
+      print("Sending: $item");
+    }
+
+    // Clear selected data from SQLite after sending
+    for (int id in selectedIds) {
+      await DatabaseHelper().clearData();
+    }
+
+    loadData();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        elevation: 5,
+        backgroundColor:  Color(0xFF0E4F94),
+        content: Text("Data sent to server and deleted locally!")),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    final data = await DatabaseHelper().fetchData();
+    setState(() {
+      formData = data;
+    });
+  }
+
+  void _deleteItem(int id) async {
+    await DatabaseHelper().deleteData(id);
+    loadData();
+    setState(() {});
+  }
+
+  void selectAll(bool select) {
+    setState(() {
+      if (select) {
+        selectedIds = formData.map((item) => item['id'] as int).toList();
+      } else {
+        selectedIds.clear();
+      }
+    });
+    loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          elevation: 5,
+          actions: [
+            MaterialButton(
+               shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                color:  Color(0xFF0E4F94),
+                elevation: 5,
+
+              onPressed: () => selectAll(true),
+              child: Text('Select All', style: TextStyle(color: Colors.white)),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 30),
+              child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                color:  Color(0xFF0E4F94),
+                elevation: 5,
+                onPressed: () => selectAll(false),
+                child:
+                    Text('Deselect All', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          ],
           title: Text(
-        'Saved Data',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-      )),
+            'Saved Data',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+          )),
       body: FutureBuilder<List<Map<String, dynamic>>>(
           future: dbHelper.fetchData(),
           builder: (context, snapshot) {
@@ -62,7 +180,7 @@ class DataListPage extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: Container(
-                                height: 1830,
+                                height: 1790,
                                 width: 834,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -77,10 +195,26 @@ class DataListPage extends StatelessWidget {
                                   ],
                                 ),
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 15, top: 15),
+                                  padding: const EdgeInsets.only(
+                                    left: 15,
+                                  ),
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
+                                      Checkbox(
+                                          activeColor: Colors.black,
+                                          value:
+                                              selectedIds.contains(item['id']),
+                                          onChanged: (bool? value) {
+                                            setState(() {});
+                                            (() {
+                                              if (value == true) {
+                                                selectedIds.add(item['id']);
+                                              } else {
+                                                selectedIds.remove(item['id']);
+                                              }
+                                            });
+                                          }),
                                       Row(
                                         children: [
                                           Text(
@@ -2252,6 +2386,53 @@ class DataListPage extends StatelessWidget {
                                           SizedBox(
                                             width: 100,
                                           ),
+                                          // Container(
+                                          //   height: 40,
+                                          //   child: MaterialButton(
+                                          //     shape: RoundedRectangleBorder(
+                                          //         borderRadius:
+                                          //             BorderRadius.circular(5)),
+                                          //     elevation: 5,
+                                          //     color: const Color.fromARGB(
+                                          //         255, 189, 29, 29),
+                                          //     onPressed: () async {
+
+                                          //       if (widget.formData == null) {
+                                          //         await DatabaseHelper()
+                                          //             .insertData(item);
+                                          //       } else {
+                                          //         await DatabaseHelper()
+                                          //             .update(item['id'], {
+                                          //           'name': item['name'],
+                                          //           'phone': item['phone'],
+                                          //         });
+                                          //       }
+
+                                          //       ScaffoldMessenger.of(context)
+                                          //           .showSnackBar(
+                                          //         SnackBar(
+                                          //             backgroundColor: Colors
+                                          //                 .redAccent.shade700,
+                                          //             content: Text('Update!')),
+                                          //       );
+                                          //       Navigator.push(
+                                          //           context,
+                                          //           MaterialPageRoute(
+                                          //               builder: (context) =>
+                                          //                   TabletPage(
+                                          //                     formData: {},
+                                          //                   )));
+                                          //     },
+                                          //     child: Text(
+                                          //       'Update',
+                                          //       style: TextStyle(
+                                          //           color: Colors.white),
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                          // SizedBox(
+                                          //   width: 30,
+                                          // ),
                                           Container(
                                             height: 40,
                                             child: MaterialButton(
@@ -2261,23 +2442,81 @@ class DataListPage extends StatelessWidget {
                                               elevation: 5,
                                               color: const Color.fromARGB(
                                                   255, 189, 29, 29),
-                                              onPressed: () {
-                                                DatabaseHelper()
-                                                    .deleteData(item['id']);
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                      backgroundColor: Colors
-                                                          .redAccent.shade700,
-                                                      content: Text(
-                                                          'Data Deleted!')),
-                                                );
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            DataListPage(formData: {},)));
-                                              },
+                                              onPressed: () => showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          AlertDialog(
+                                                            title: Text(
+                                                                "Delete data"),
+                                                            content: Text(
+                                                                "Are you sure want to delete data",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  fontFamily:
+                                                                      'Inter',
+                                                                )),
+                                                            actions: [
+                                                              MaterialButton(
+                                                                color: Colors.white,
+                                                                   shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                   ),
+                                                                elevation: 5,
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context,
+                                                                        "Cancel"),
+                                                                child: Text(
+                                                                  "Cancel",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
+                                                              ),
+                                                              MaterialButton(
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(10),
+                                                                ),
+                                                                color: Colors
+                                                                        .redAccent[
+                                                                    700],
+                                                                    
+                                                                elevation: 5,
+                                                                onPressed: () {
+                                                                  _deleteItem(
+                                                                      item[
+                                                                          'id']);
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .showSnackBar(const SnackBar(
+                                                                          backgroundColor: Colors.redAccent,
+                                                                          content: Text(
+                                                                            " Data deleted!",
+                                                                            style:
+                                                                                TextStyle(color: Colors.white),
+                                                                          )));
+                                                                },
+                                                                child: Text(
+                                                                    "Delete",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16)),
+                                                              )
+                                                            ],
+                                                          )),
                                               child: Text(
                                                 'Delete',
                                                 style: TextStyle(
@@ -2288,41 +2527,6 @@ class DataListPage extends StatelessWidget {
                                           SizedBox(
                                             width: 30,
                                           ),
-                                          //   Container(
-                                          //   height: 40,
-                                          //   child: MaterialButton(
-                                          //     shape: RoundedRectangleBorder(
-                                          //         borderRadius:
-                                          //             BorderRadius.circular(5)),
-                                          //     elevation: 5,
-                                          //     color: const Color.fromARGB(
-                                          //         255, 189, 29, 29),
-                                          //     onPressed: ()async {
-                                          //      await DatabaseHelper().update();
-                                          //       ScaffoldMessenger.of(context)
-                                          //           .showSnackBar(
-                                          //         SnackBar(
-                                          //             backgroundColor:
-                                          //                 Colors.redAccent.shade700,
-                                          //             content:
-                                          //                 Text('Update your data!')),
-                                          //       );
-                                          //       Navigator.push(
-                                          //           context,
-                                          //           MaterialPageRoute(
-                                          //               builder: (context) =>
-                                          //                   TabletPage(formData:{})));
-                                          //     },
-                                          //     child: Text(
-                                          //       'Update',
-                                          //       style:
-                                          //           TextStyle(color: Colors.white),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          // SizedBox(
-                                          //   width: 30,
-                                          // ),
                                           Container(
                                             height: 40,
                                             width: 137,
@@ -2331,30 +2535,32 @@ class DataListPage extends StatelessWidget {
                                                   borderRadius:
                                                       BorderRadius.circular(5)),
                                               elevation: 5,
-                                              color: Color.fromARGB(
-                                                  255, 2, 53, 107),
-                                              onPressed: ()async{
+                                              color: Color(0xFF0E4F94),
+                                              onPressed: () async {
                                                 _saveToServer();
+
                                                 // final data =
                                                 //     await DatabaseHelper()
                                                 //         .fetchData();
                                                 // for (final item in data) {
                                                 //   _saveToServer();
                                                 // }
-                                          
+
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   SnackBar(
                                                       backgroundColor:
-                                                          Colors.green,
+                                                         Color(0xFF0E4F94),
                                                       content: Text(
-                                                          'Data uploaded to the server!')),
+                                                          'Data uploaded to the server!',style: TextStyle(color: Colors.white),)),
                                                 );
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            DataListPage(formData: {},)));
+                                                            DataListPage(
+                                                              formData: {},
+                                                            )));
                                               },
                                               child: Text(
                                                 'Upload to server',
@@ -2383,13 +2589,12 @@ class DataListPage extends StatelessWidget {
         elevation: 5,
         backgroundColor: Color(0xFF0E4F94),
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TabletPage(
-                        formData: {},
-                      )));
+          _sendDataToServer();
         },
+        // selectedIds.isEmpty ? null : (){
+
+        // },
+
         child: Container(
           height: 30,
           width: 30,
@@ -2398,7 +2603,7 @@ class DataListPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Icon(
-            Icons.add,
+            Icons.send,
             color: Color(0xFF0E4F94),
           ),
         ),

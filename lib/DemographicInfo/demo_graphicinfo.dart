@@ -297,78 +297,82 @@ class _TabletPageState extends State<TabletPage> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    // mainAxisSize: MainAxisSize.max,
+                  child: Column(
                     children: [
-                      Text(
-                        "Personal info",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          height: 0,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Text(
-                        "Clinical & Spectale info",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          height: 0,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        "Systm Cond & Eye Exam",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          height: 0,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 60,
-                      ),
-                      Text(
-                        "Vision test",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          height: 0,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Expanded(
-                        child: Text(
-                          "Obstacle details & payment",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w500,
-                            height: 0,
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        // mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            "Personal info",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            width: 50,
+                          ),
+                          Text(
+                            "Clinical & Spectale info",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Systm Cond & Eye Exam",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 60,
+                          ),
+                          Text(
+                            "Vision test",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 50,
+                          ),
+                          Expanded(
+                            child: Text(
+                              "Obstacle details & payment",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -1749,13 +1753,63 @@ class _TabletPageState extends State<TabletPage> {
                               ),
                         onPressed: () async {
                           if (_formkey.currentState!.validate()) {
+                              if (selectedOption.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                if (selectedOption1.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                if (selectedOption2.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                if (selectedOption3.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                if (selectedOption4.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
                             setState(() {
                               isLoading = true;
                             });
                             await Future.delayed(Duration(seconds: 1), () {
                               setState(() {
                                 isLoading = false;
-
+                              
                                 widget.formData['name'] = namecontroller.text;
                                 widget.formData['phone'] =
                                     phonenumbercontroller.text;
@@ -1777,6 +1831,7 @@ class _TabletPageState extends State<TabletPage> {
                                     selectedOption3;
                                 widget.formData['selectedoption4'] =
                                     selectedOption4;
+
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -1788,16 +1843,11 @@ class _TabletPageState extends State<TabletPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         elevation: 5,
-                                        backgroundColor: Colors.green,
+                                      backgroundColor: Color(0xFF0E4F94),
                                         shape: RoundedRectangleBorder(),
                                         content: Text(
-                                            "Data Saved",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headlineSmall!
-                                                .copyWith(
-                                                    fontWeight: FontWeight.w300,
-                                                    color: Colors.white))));
+                                            "Data Saved Successfully",
+                                          )));
                               });
                             });
                           } else {
@@ -1816,7 +1866,7 @@ class _TabletPageState extends State<TabletPage> {
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        color:  Color(0xFF0E4F94),
+                        color: Color(0xFF0E4F94),
                       ),
 
                       width: 120,
@@ -1828,32 +1878,28 @@ class _TabletPageState extends State<TabletPage> {
               ],
             ),
           ),
-          
         ),
-         floatingActionButton: FloatingActionButton(
-        elevation: 5,
-        backgroundColor: Color(0xFF0E4F94),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => LoginPage()));
-        },
-        child: Container(
-          height: 30,
-          width: 30,
-          decoration: BoxDecoration(
-            color: Colors.blue[50],
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Icon(
-            Icons.logout,
-            color: Color(0xFF0E4F94),
+        floatingActionButton: FloatingActionButton(
+          elevation: 5,
+          backgroundColor: Color(0xFF0E4F94),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => LoginPage()));
+          },
+          child: Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+              color: Colors.blue[50],
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Icon(
+              Icons.logout,
+              color: Color(0xFF0E4F94),
+            ),
           ),
         ),
       ),
-      ),
-      
     );
   }
 }

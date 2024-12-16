@@ -1399,6 +1399,36 @@ class _ObstacleDetailsPageState extends State<ObstacleDetailsPage> {
                                     ),
                               onPressed: () {
                                 if (_formkey.currentState!.validate()) {
+                                    if (radiovalue.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                  if (radiovalue1.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                  if (radiovalue2.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
                                   setState(() {
                                     isLoading = true;
                                   });
@@ -1429,7 +1459,7 @@ class _ObstacleDetailsPageState extends State<ObstacleDetailsPage> {
                                                   formData: widget.formData)));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
-                                              backgroundColor: Colors.green,
+                                              backgroundColor: Color(0xFF0E4F94),
                                               content: Text(
                                                 "please check your data!",
                                                 style: TextStyle(

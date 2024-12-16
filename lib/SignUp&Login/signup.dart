@@ -22,8 +22,8 @@ class SignupPage extends StatelessWidget {
     int id = await DatabaseHelper.instance.insertUser(username, password);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Colors.green,
-        content: Text("User Registered: $id")),
+        
+        content: Text("User Registered: $id",style: TextStyle(color: Colors.white),)),
     );
     Navigator.pop(context);
   }

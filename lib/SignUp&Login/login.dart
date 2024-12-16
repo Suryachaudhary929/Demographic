@@ -25,8 +25,8 @@ class LoginPage extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             elevation: 5,
-            backgroundColor: Colors.green,
-            content: Text("Login Successful")),
+            backgroundColor:  Color(0xFF0E4F94),
+            content: Text("Login Successful",style: TextStyle(color: Colors.white),)),
       );
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => TabletPage(formData: {})));

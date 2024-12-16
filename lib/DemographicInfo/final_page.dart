@@ -2058,6 +2058,11 @@ class FinalPage extends StatelessWidget {
                                 color:  Color(0xFF0E4F94),
                                 onPressed: () {
                                   Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor: Color(0xFF0E4F94),
+                                        content: Text('Please update your data')),
+                                  );
                                 },
                                 child: Text('Edit',
                                     style: TextStyle(
@@ -2078,8 +2083,8 @@ class FinalPage extends StatelessWidget {
                                   DatabaseHelper().insertData(formData);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                        backgroundColor: Colors.green,
-                                        content: Text('Data Saved!')),
+                                        backgroundColor: Color(0xFF0E4F94),
+                                        content: Text('Data Saved Successfully')),
                                   );
                                   Navigator.push(
                                       context,

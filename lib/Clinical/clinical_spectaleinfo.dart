@@ -1749,6 +1749,86 @@ class _ClinicalInfoState extends State<ClinicalInfo> {
                                     ),
                               onPressed: () {
                                   if (_formkey.currentState!.validate()) {
+                                      if (radioButton.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                  if (radioButton1.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                  if (radioButton2.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                  if (radioButton3.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                  if (radioButton4.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                  if (radioButton5.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                  if (radioButton6.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
+                                  if (radioButton7.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
                                 setState(() {
                                   isLoading = true;
                                 });
@@ -1772,9 +1852,9 @@ class _ClinicalInfoState extends State<ClinicalInfo> {
                                           Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) => SystemCondandEyeExam(formData: widget.formData,)));
                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                        backgroundColor: Colors.green,
+                                        backgroundColor: Color(0xFF0E4F94),
                                         content: Text(
-                                          "Data Saved",
+                                          "Data Saved Successfully",
                                           style: TextStyle(color: Colors.white),
                                         )));
                                   

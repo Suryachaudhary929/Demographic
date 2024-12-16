@@ -164,8 +164,7 @@ class _SignUpandLoginState extends State<SignUpandLogin> {
                                                     .showSnackBar(
                                                         const SnackBar(
                                                             backgroundColor:
-                                                                Colors
-                                                                    .green,
+                                                                Colors.indigo,
                                                             content: Text(
                                                               "Success",
                                                               style: TextStyle(

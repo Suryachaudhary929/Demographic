@@ -3143,6 +3143,16 @@ class _VisionScreenState extends State<VisionScreen> {
                                       ),
                                 onPressed: () {
                                   if (_formkey.currentState!.validate()) {
+                                     if (_radio.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        backgroundColor:
+                                            Colors.redAccent.shade700,
+                                        content:
+                                            Text("No option selected!")),
+                                  );
+                                  return;
+                                }
                                     setState(() {
                                       isLoading = true;
                                     });
@@ -3206,9 +3216,9 @@ class _VisionScreenState extends State<VisionScreen> {
                                                             widget.formData)));
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
-                                                backgroundColor: Colors.green,
+                                                backgroundColor:  Color(0xFF0E4F94),
                                                 content: Text(
-                                                  "Data Saved",
+                                                  "Data Saved Successfully",
                                                   style: TextStyle(
                                                       color: Colors.white),
                                                 )));
